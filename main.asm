@@ -5,6 +5,9 @@ canMove PROTO,
     xnow: DWORD,
     ynow: DWORD
 
+Move PROTO,
+    command: BYTE
+
 .data
     x DWORD 1
     y DWORD 1
@@ -35,72 +38,86 @@ main PROC
         mov eax, y
         call WriteDec
         call Crlf
-        
+
         call ReadChar
-        cmp al, 'w'
-        je TryUp
-        cmp al, 's'
-        je TryDown
-        cmp al, 'a'
-        je TryLeft
-        cmp al, 'd'
-        je TryRight
+        INVOKE Move, al
+        call Clrscr
         jmp MainLoop
 
-    TryUp:
+main ENDP
+
+; ------------------------------------
+; void Move(command)
+; 
+; Description:
+;   move the player according to input key
+;   reads in one character 'w', 'a', 's', 'd'
+;   if the destination cell is not blocked
+;   updates player's position (x, y)
+;
+; Parameters:
+;   command - the input key character.
+;
+; Globals Modified:
+;   x, y
+; ------------------------------------
+Move PROC,
+    command: BYTE
+
+    movzx eax, command
+    cmp al, 'w'
+    je MoveUp
+    cmp al, 's'
+    je MoveDown
+    cmp al, 'a'
+    je MoveLeft
+    cmp al, 'd'
+    je MoveRight
+    ret
+
+    MoveUp:
         mov eax, x
         mov ebx, y
         dec ebx
         INVOKE canMove, eax, ebx
         cmp eax, 1
-        je MoveUp
-        jmp ClearAndLoop
+        jne retMove
+        dec y
+        jmp retMove
 
-    TryDown:
+    MoveDown:
         mov eax, x
         mov ebx, y
         inc ebx
         INVOKE canMove, eax, ebx
         cmp eax, 1
-        je MoveDown
-        jmp ClearAndLoop
+        jne retMove
+        inc y
+        jmp retMove
 
-    TryLeft:
+    MoveLeft:
         mov eax, x
         mov ebx, y
         dec eax
         INVOKE canMove, eax, ebx
         cmp eax, 1
-        je MoveLeft
-        jmp ClearAndLoop
+        jne retMove
+        dec x
+        jmp retMove
 
-    TryRight:
+    MoveRight:
         mov eax, x
         mov ebx, y
         inc eax
         INVOKE canMove, eax, ebx
         cmp eax, 1
-        je MoveRight
-        jmp ClearAndLoop
-
-    MoveUp:
-        dec y
-        jmp ClearAndLoop
-    MoveDown:
-        inc y
-        jmp ClearAndLoop
-    MoveLeft:
-        dec x
-        jmp ClearAndLoop
-    MoveRight:
+        jne retMove
         inc x
-        jmp ClearAndLoop
+        jmp retMove
 
-    ClearAndLoop:
-        call Clrscr
-        jmp MainLoop
-
-main ENDP
+    retMove:
+        ret
+Move ENDP
 
 ; ------------------------------------
 ; bool canMove(xnow, ynow)
