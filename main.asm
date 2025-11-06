@@ -26,6 +26,24 @@ DrawMaze PROTO
     "#      #",\
     "########",0
 
+    playerPaint BYTE \
+    "@@@@",\
+    "@..@",\
+    "@@@@",\
+    "@  @",0
+
+    wallPaint BYTE \
+    "####",\
+    "####",\
+    "####",\
+    "####",0
+
+    airPaint BYTE \
+    "    ",\
+    "    ",\
+    "    ",\
+    "    ",0
+
 .code
 main PROC
     MainLoop:
@@ -66,16 +84,21 @@ main ENDP
 ;   None
 ; ------------------------------------------------------------------------
 DrawMaze PROC USES eax ebx ecx esi
-    mov ebx, 0
+    mov ebx, 0          ; y
     mov esi, 0
     row:
         cmp ebx, mazey
         je end_row
-        mov ecx, 0
+        mov ecx, 0      ; x
 
         col:
             cmp ecx, mazex
             je end_col
+
+            ; index
+            mov  esi, mazex
+            imul esi, ebx
+            add  esi, ecx
 
             mov al, maze[esi]
             cmp ecx, x
@@ -88,7 +111,6 @@ DrawMaze PROC USES eax ebx ecx esi
                 call WriteChar
 
             skip:
-                add esi, TYPE BYTE
                 inc ecx
                 jmp col
 
