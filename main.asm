@@ -8,6 +8,8 @@ canMove PROTO,
 Move PROTO,
     command: BYTE
 
+DrawMaze PROTO
+
 .data
     x DWORD 1
     y DWORD 1
@@ -17,36 +19,89 @@ Move PROTO,
     mazex DWORD 8
     mazey DWORD 6
     maze BYTE \
-    "########",0dh,0ah,\
-    "#      #",0dh,0ah,\
-    "# ###  #",0dh,0ah,\
-    "#   #  #",0dh,0ah,\
-    "#      #",0dh,0ah,\
-    "########",0dh,0ah,0
+    "########",\
+    "#      #",\
+    "# ###  #",\
+    "#   #  #",\
+    "#      #",\
+    "########",0
 
 .code
 main PROC
-    call Clrscr
-
     MainLoop:
-        mov edx, OFFSET msg
-        call WriteString
-        mov eax, x
-        call WriteDec
-        mov edx, OFFSET comma
-        call WriteString
-        mov eax, y
-        call WriteDec
-        call Crlf
-
+        call Clrscr
+        INVOKE DrawMaze
+        
         call ReadChar
         INVOKE Move, al
-        call Clrscr
         jmp MainLoop
-
 main ENDP
 
-; ------------------------------------
+; ------------------------------------------------------------------------
+; void DrawMaze()
+;
+; Description:
+;   Draws the entire maze to the screen.
+;   Iterates through the maze array row by row.
+;   Displays walls '#' and empty spaces ' ' as defined in the maze array.
+;   Displays the player character '@' at the current (x, y) position.
+;   Moves to a new line after each row.
+;
+; Parameters:
+;   None
+;
+; Globals Used:
+;   x, y      - Player's current position.
+;   mazex     - Width of the maze (number of columns).
+;   mazey     - Height of the maze (number of rows).
+;   maze      - The maze array (layout of walls and spaces).
+;
+; Globals Modified:
+;   None
+;
+; Return:
+;   None
+;
+; Notes:
+;   None
+; ------------------------------------------------------------------------
+DrawMaze PROC USES eax ebx ecx esi
+    mov ebx, 0
+    mov esi, 0
+    row:
+        cmp ebx, mazey
+        je end_row
+        mov ecx, 0
+
+        col:
+            cmp ecx, mazex
+            je end_col
+
+            mov al, maze[esi]
+            cmp ecx, x
+            jne not_player
+            cmp ebx, y
+            jne not_player
+            mov al, '@' 
+
+            not_player:
+                call WriteChar
+
+            skip:
+                add esi, TYPE BYTE
+                inc ecx
+                jmp col
+
+        end_col:
+            call Crlf
+            inc ebx
+            jmp row
+
+    end_row:
+        ret
+DrawMaze ENDP
+
+; ------------------------------------------------------------------------
 ; void Move(command)
 ; 
 ; Description:
@@ -56,12 +111,22 @@ main ENDP
 ;   updates player's position (x, y)
 ;
 ; Parameters:
-;   command - the input key character.
+;   command   - the input key character
+;
+; Globals Used:
+;   x, y      - current player coordinates
+;   canMove() - function to check if the target cell is accessible
 ;
 ; Globals Modified:
-;   x, y
-; ------------------------------------
-Move PROC,
+;   x, y      - updates player's position if movement is valid
+;
+; Return:
+;   None
+;
+; Notes:
+;   None
+; ------------------------------------------------------------------------
+Move PROC USES eax ebx,
     command: BYTE
 
     movzx eax, command
@@ -119,7 +184,7 @@ Move PROC,
         ret
 Move ENDP
 
-; ------------------------------------
+; ------------------------------------------------------------------------
 ; bool canMove(xnow, ynow)
 ;
 ; Description:
@@ -130,16 +195,25 @@ Move ENDP
 ;   xnow - target X position
 ;   ynow - target Y position
 ;
+; Globals Used:
+;   maze    - the maze array containing walls '#' and empty spaces ' '
+;   mazex   - width of the maze (number of columns)
+;
+; Globals Modified:
+;   None
+;
 ; Return:
 ;   EAX = 1 : can go
 ;   EAX = 0 : can't go
-; ------------------------------------
+;
+; Notes:
+;   index = ynow * mazex + xnow
+; ------------------------------------------------------------------------
 canMove PROC USES ebx,
     xnow: DWORD,
     ynow: DWORD
 
     mov eax, mazex
-    add eax, 2
     mov ebx, ynow
     imul eax, ebx
     add eax, xnow
