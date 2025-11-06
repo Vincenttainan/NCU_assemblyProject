@@ -33,10 +33,10 @@ DrawMaze PROTO
     "@  @",0
 
     wallPaint BYTE \
-    "####",\
-    "####",\
-    "####",\
-    "####",0
+    "+--+",\
+    "|  |",\
+    "|  |",\
+    "+--+",0
 
     airPaint BYTE \
     "    ",\
@@ -59,20 +59,25 @@ main ENDP
 ; void DrawMaze()
 ;
 ; Description:
-;   Draws the entire maze to the screen.
-;   Iterates through the maze array row by row.
-;   Displays walls '#' and empty spaces ' ' as defined in the maze array.
-;   Displays the player character '@' at the current (x, y) position.
-;   Moves to a new line after each row.
+;   Draws the entire maze to the screen using a 4x4 pixel representation for
+;   each maze cell. Iterates through the "pixel" rows and columns rather than
+;   just maze cells.
+;   - Uses wallPaint for '#' cells.
+;   - Uses airPaint for ' ' cells.
+;   - Uses playerPaint for the current player position (x, y).
+;   Calculates the correct pixel within the 4x4 paint block for each maze cell.
 ;
 ; Parameters:
 ;   None
 ;
 ; Globals Used:
-;   x, y      - Player's current position.
-;   mazex     - Width of the maze (number of columns).
-;   mazey     - Height of the maze (number of rows).
-;   maze      - The maze array (layout of walls and spaces).
+;   x, y        - Player's current maze coordinates.
+;   mazex       - Width of the maze (number of columns).
+;   mazey       - Height of the maze (number of rows).
+;   maze        - The maze array (layout of walls and spaces).
+;   playerPaint - 4x4 pixel pattern representing the player.
+;   wallPaint   - 4x4 pixel pattern representing walls.
+;   airPaint    - 4x4 pixel pattern representing empty spaces.
 ;
 ; Globals Modified:
 ;   None
@@ -81,36 +86,77 @@ main ENDP
 ;   None
 ;
 ; Notes:
-;   None
+;   - Each maze cell is drawn as a 4x4 block of characters.
+;   - Pixel indices are calculated using modulo 4 to map to the correct paint.
 ; ------------------------------------------------------------------------
-DrawMaze PROC USES eax ebx ecx esi
-    mov ebx, 0          ; y
+DrawMaze PROC USES eax ebx ecx esi edi edx
+    mov ebx, 0
     mov esi, 0
+    mov edi, mazey
+    shl edi, 2
+    mov edx, mazex
+    shl edx, 2
     row:
-        cmp ebx, mazey
+        cmp ebx, edi
         je end_row
-        mov ecx, 0      ; x
+        mov ecx, 0
 
         col:
-            cmp ecx, mazex
+            cmp ecx, edx
             je end_col
 
-            ; index
+            push ebx
+            push ecx
+            shr ebx, 2
+            shr ecx, 2
+
             mov  esi, mazex
             imul esi, ebx
             add  esi, ecx
 
             mov al, maze[esi]
             cmp ecx, x
-            jne not_player
+            jne draw_calculate
             cmp ebx, y
-            jne not_player
+            jne draw_calculate
             mov al, '@' 
 
-            not_player:
+            draw_calculate:
+                pop ecx
+                pop ebx
+                push ebx
+                push ecx
+                push esi
+
+                and ebx, 3
+                and ecx, 3
+                mov  esi, 4
+                imul esi, ebx
+                add  esi, ecx
+
+                cmp al, '#'
+                je draw_wall
+                cmp al, ' '
+                je draw_air
+                cmp al, '@'
+                je draw_player
+
+                draw_wall:
+                    mov al, wallPaint[esi]
+                    jmp draw
+                draw_air:
+                    mov al, airPaint[esi]
+                    jmp draw
+                draw_player:
+                    mov al, playerPaint[esi]
+                    jmp draw
+
+            draw:
                 call WriteChar
 
-            skip:
+                pop esi
+                pop ecx
+                pop ebx
                 inc ecx
                 jmp col
 
