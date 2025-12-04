@@ -5,8 +5,10 @@ MyRandomRange PROTO,
     maxNum: DWORD
 
 .data
-    startMsg  BYTE "Press Space to start...", 0
-    beginMsg  BYTE "Fishing Game Start", 0
+    startMsg    BYTE "Press Space to start...", 0
+    beginMsg    BYTE "Fishing Game Start", 0
+    successMsg  BYTE "Fishing Success!!!", 0
+    failMsg     BYTE "Fishing Failed !!!", 0
 
     ; for random
     randSeed DWORD ?
@@ -27,12 +29,20 @@ MyRandomRange PROTO,
     difficulty   DWORD 3      ; move every <difficulty> tick
     fishCooldown DWORD 0      ; count steps
 
+    ; for process
+    process   DWORD 10
+
 .code
 main PROC
+    ; set randSeed with time
+    call    GetTickCount
+    mov     randSeed, eax
+    
     SetUp:
-        ; set randSeed with time
-        call    GetTickCount
-        mov     randSeed, eax
+        mov     hookPos, 0
+        mov     fishPos, 0
+        mov     fishCooldown, 0
+        mov     process, 10
 
     WaitForSpace:
         call Clrscr
@@ -58,6 +68,9 @@ main PROC
         call WriteInt
         call crlf
         mov eax, fishPos
+        call WriteInt
+        call crlf
+        mov eax, process
         call WriteInt
         call crlf
 
@@ -110,8 +123,46 @@ main PROC
             .ENDIF
             SkipFishMove:
                 dec fishCooldown
+            
+        ProcessCaculate:
+            mov eax, hookPos
+            mov ebx, hookPos
+            add ebx, hookSiz
+
+            .IF eax <= fishPos
+                .IF fishPos <= ebx
+                    mov ecx, process
+                    inc ecx
+                    mov process, ecx
+                .ELSE
+                    mov ecx, process
+                    dec ecx
+                    mov process, ecx
+                .ENDIF
+            .ELSE
+                mov ecx, process
+                dec ecx
+                mov process, ecx
+            .ENDIF
+
+            .IF process == 100
+                call Clrscr
+                mov edx, OFFSET successMsg
+                call WriteString
+                mov eax, 1000
+                call Delay
+                jmp SetUp
+            .ELSEIF process == 0
+                call Clrscr
+                mov edx, OFFSET failMsg
+                call WriteString
+                mov eax, 1000
+                call Delay
+                jmp SetUp
+            .ENDIF
+
         ; delay
-        mov eax, 10
+        mov eax, 100
         call Delay
 
         jmp FishingGame
