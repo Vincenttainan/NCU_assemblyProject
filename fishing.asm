@@ -1,9 +1,14 @@
 INCLUDE Irvine32.inc
 main EQU start@0
 
+MyRandomRange PROTO,
+    maxNum: DWORD
+
 .data
     startMsg  BYTE "Press Space to start...", 0
     beginMsg  BYTE "Fishing Game Start", 0
+
+    randSeed DWORD ?
 
     lakeSiz   DWORD 50
 
@@ -15,6 +20,11 @@ main EQU start@0
 
 .code
 main PROC
+    SetUp:
+        ; set randSeed with time
+        call    GetTickCount
+        mov     randSeed, eax
+
     WaitForSpace:
         call Clrscr
         mov edx, OFFSET startMsg
@@ -33,31 +43,72 @@ main PROC
         call Delay
 
     FishingGame:
+        ; output for debug
         call Clrscr
         mov eax, hookPos
         call WriteInt
+        call crlf
 
-        mov eax, hookPos
-        add eax, gravity
-        mov hookPos, eax
-        call ReadKey
-        .IF al == ' '
+        HookCaculate:
             mov eax, hookPos
-            add eax, jumpForce
+            add eax, gravity
             mov hookPos, eax
-        .ENDIF
+            call ReadKey
+            .IF al == ' '
+                mov eax, hookPos
+                add eax, jumpForce
+                mov hookPos, eax
+            .ENDIF
 
-        mov eax, lakeSiz
-        sub eax, hookSiz
-        .IF hookPos < 0
-            mov hookPos, 0
-        .ELSEIF hookPos > eax
-            mov hookPos, eax
-        .ENDIF
+            mov eax, lakeSiz
+            sub eax, hookSiz
+            .IF hookPos < 0
+                mov hookPos, 0
+            .ELSEIF hookPos > eax
+                mov hookPos, eax
+            .ENDIF
 
-        mov eax, 100
+        ; delay
+        mov eax, 1000
         call Delay
+        
         jmp FishingGame
     exit
 main ENDP
+
+; ---------------------------------------------------------
+; MyRandomRange
+; generate a number between 0 and maxNum
+; return：EAX = random number
+; need：defined randSeed in .data
+; ---------------------------------------------------------
+MyRandomRange PROC USES ebx ecx edx,
+    maxNum: DWORD
+
+    mov eax, maxNum
+    cmp eax, 0
+    je _return_zero
+
+    mov eax, randSeed
+    
+    imul eax, eax, 1664525
+    add eax, 1013904223
+    
+    mov randSeed, eax
+
+    mov edx, 0
+    mov ecx, maxNum
+    inc ecx
+    div ecx
+    mov eax, edx
+
+    ret
+
+    _return_zero:
+        xor eax, eax
+        ret
+
+MyRandomRange ENDP
+
+
 END main
