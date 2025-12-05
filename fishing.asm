@@ -9,6 +9,7 @@ MyRandomRange PROTO,
     beginMsg    BYTE "Fishing Game Start", 0
     successMsg  BYTE "Fishing Success!!!", 0
     failMsg     BYTE "Fishing Failed !!!", 0
+    frame       BYTE "+--------------------------------------------------+", 0
 
     ; for random
     randSeed DWORD ?
@@ -17,7 +18,7 @@ MyRandomRange PROTO,
     lakeSiz   DWORD 50
 
     ; for hook
-    hookSiz   DWORD 3       ; 3 <= hookSiz <= lakeSiz
+    hookSiz   DWORD 5       ; 5 <= hookSiz <= lakeSiz
     hookPos   SDWORD 0      ; 0 <= hookPos <= lakeSiz - hookSiz
     velocity  SDWORD 0      ; hook's velocity
     gravity   SDWORD -1     ; + <gravity> per tick
@@ -26,11 +27,11 @@ MyRandomRange PROTO,
     ; for fish
     fishPos     SDWORD 1      ; 1 <= hookPos <= lakeSiz - 1
     fishDir     SDWORD 1      ; -1, 0, 1 -> down, stop, up
-    difficulty   DWORD 3      ; move every <difficulty> tick
+    difficulty   DWORD 5      ; move every <difficulty> tick
     fishCooldown DWORD 0      ; count steps
 
     ; for process
-    process   DWORD 10
+    process   DWORD 10      ; 0 -> fial, 100 -> success
 
 .code
 main PROC
@@ -63,17 +64,226 @@ main PROC
 
     FishingGame:
         ; output for debug
-        call Clrscr
-        mov eax, hookPos
-        call WriteInt
-        call crlf
-        mov eax, fishPos
-        call WriteInt
-        call crlf
-        mov eax, process
-        call WriteInt
-        call crlf
+        ;call Clrscr
+        ;mov eax, hookPos
+        ;call WriteInt
+        ;call crlf
+        ;mov eax, fishPos
+        ;call WriteInt
+        ;call crlf
+        ;mov eax, process
+        ;call WriteInt
+        ;call crlf
 
+        Output:
+            call Clrscr
+            UpperFrame:
+            ; 1st    +----------+
+                mov edx, OFFSET frame
+                call WriteString
+                call crlf
+
+            ProcessBar:
+            ;  proc: |###       |
+                mov al, '|'
+                call WriteChar
+
+                DoneLeftProcessBar:
+                    mov ecx, process
+                    shr ecx, 1
+                    mov al, '#'
+                LoopProcess:
+                    cmp ecx, 0
+                    jle DoneProcess
+
+                    call WriteChar
+                    dec ecx
+                    jmp LoopProcess
+                
+                DoneProcess:
+                    mov ecx, 50
+                    mov ebx, process
+                    shr ebx, 1
+                    sub ecx, ebx
+                    mov al, ' '
+                LoopUnprocess:
+                    cmp ecx, 0
+                    jle DoneUnprocess
+                    
+                    call WriteChar
+                    dec ecx
+                    jmp LoopUnprocess
+
+                DoneUnprocess:
+                    mov al, '|'
+                    call WriteChar
+                    call crlf
+
+            MidFrame:
+            ; 2nd    +----------+
+                mov edx, OFFSET frame
+                call WriteString
+                call crlf
+            
+            UpperHook:
+            ; 1st    | +-+      |
+                mov al, '|'
+                call WriteChar
+            
+                DoneUpperLeftHookBar:
+                    mov ecx, hookPos
+                    mov al, ' '
+
+                UpperLeftHook:
+                    cmp ecx, 0
+                    jle DoneUpperLeftHook
+
+                    call WriteChar
+                    dec ecx
+                    jmp UpperLeftHook
+                
+                DoneUpperLeftHook:
+                    mov al, '+'
+                    call WriteChar
+
+                    mov ecx, hookSiz
+                    sub ecx, 2
+                    mov al, '-'
+
+                UpperLoopHook:
+                    cmp ecx, 0
+                    jle DoneUpperLoopHook
+
+                    call WriteChar
+                    dec ecx
+                    jmp UpperLoopHook
+
+                DoneUpperLoopHook:
+                    mov al, '+'
+                    call WriteChar
+                    
+                    mov ecx, lakeSiz
+                    sub ecx, hookPos
+                    sub ecx, hookSiz
+                    mov al, ' '
+
+                UpperRightHook:
+                    cmp ecx, 0
+                    jle DoneUpperRightHook
+
+                    call WriteChar
+                    dec ecx
+                    jmp UpperRightHook
+
+                DoneUpperRightHook:
+                    mov al, '|'
+                    call WriteChar
+                    call crlf
+
+            Fish:
+            ;        | [F]      |
+                mov al, '|'
+                call WriteChar
+                
+                mov ecx, fishPos
+                sub ecx, 2
+                mov al, ' '
+
+                LoopFishLeft:
+                    cmp ecx, 0
+                    jle DoneLoopFishLeft
+
+                    call WriteChar
+                    dec ecx
+                    jmp LoopFishLeft
+
+                DoneLoopFishLeft:
+                    mov al, '['
+                    call WriteChar
+                    mov al, 'F'
+                    call WriteChar
+                    mov al, ']'
+                    call WriteChar
+
+                    mov ecx, lakeSiz
+                    sub ecx, fishPos
+                    dec ecx
+                    mov al, ' '
+
+                LoopFishRight:
+                    cmp ecx, 0
+                    jle DoneLoopFishRight
+
+                    call WriteChar
+                    dec ecx
+                    jmp LoopFishRight
+
+                DoneLoopFishRight:
+                    mov al, '|'
+                    call WriteChar
+                    call crlf
+
+            LowerHook:
+            ; 2nd    | +-+      |
+                mov al, '|'
+                call WriteChar
+            
+                DoneLowerLeftHookBar:
+                    mov ecx, hookPos
+                    mov al, ' '
+
+                LowerLeftHook:
+                    cmp ecx, 0
+                    jle DoneLowerLeftHook
+
+                    call WriteChar
+                    dec ecx
+                    jmp LowerLeftHook
+                
+                DoneLowerLeftHook:
+                    mov al, '+'
+                    call WriteChar
+
+                    mov ecx, hookSiz
+                    sub ecx, 2
+                    mov al, '-'
+
+                LowerLoopHook:
+                    cmp ecx, 0
+                    jle DoneLowerLoopHook
+
+                    call WriteChar
+                    dec ecx
+                    jmp LowerLoopHook
+
+                DoneLowerLoopHook:
+                    mov al, '+'
+                    call WriteChar
+                    
+                    mov ecx, lakeSiz
+                    sub ecx, hookPos
+                    sub ecx, hookSiz
+                    mov al, ' '
+
+                LowerRightHook:
+                    cmp ecx, 0
+                    jle DoneLowerRightHook
+
+                    call WriteChar
+                    dec ecx
+                    jmp LowerRightHook
+
+                DoneLowerRightHook:
+                    mov al, '|'
+                    call WriteChar
+                    call crlf
+
+            BotFrame:
+            ; 3rd    +----------+
+                mov edx, OFFSET frame
+                call WriteString
+                call crlf
+            
         HookCaculate:
             mov eax, hookPos
             add eax, gravity
