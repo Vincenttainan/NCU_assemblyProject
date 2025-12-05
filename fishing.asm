@@ -10,7 +10,31 @@ MyRandomRange PROTO,
     successMsg  BYTE "Fishing Success!!!", 0
     failMsg     BYTE "Fishing Failed !!!", 0
     frame       BYTE "+--------------------------------------------------+", 0
-
+    fishGameTitle   BYTE    "  ___ _    _    _              ___                ", 0Dh, 0Ah,
+                            " | __(_)__| |_ (_)_ _  __ _   / __|__ _ _ __  ___ ", 0Dh, 0Ah,
+                            " | _|| (_-< ' \| | ' \/ _` | | (_ / _` | '  \/ -_)", 0Dh, 0Ah,
+                            " |_| |_/__/_||_|_|_||_\__, |  \___\__,_|_|_|_\___|", 0Dh, 0Ah,
+                            "                      |___/                       ", 0
+    unStartFishing  BYTE    "    +----------------------------------------+", 0Dh, 0Ah,
+                            "    | .-..-..-..-..-.  .-..-..-.. ..-.. ..-. |", 0Dh, 0Ah,
+                            "    | `-. | |-||(  |   |-  | `-.|-| | |\||.. |", 0Dh, 0Ah,
+                            "    | `-' ' ' '' ' '   '  `-'`-'' ``-'' ``-' |", 0Dh, 0Ah,
+                            "    +----------------------------------------+", 0
+    slStartFishing  BYTE    "    #========================================#", 0Dh, 0Ah,
+                            "    H .-..-..-..-..-.  .-..-..-.. ..-.. ..-. H", 0Dh, 0Ah,
+                            "    H `-. | |-||(  |   |-  | `-.|-| | |\||.. H", 0Dh, 0Ah,
+                            "    H `-' ' ' '' ' '   '  `-'`-'' ``-'' ``-' H", 0Dh, 0Ah,
+                            "    #========================================#", 0
+    unFishGuide     BYTE    "    +----------------------------------------+", 0Dh, 0Ah,
+                            "    |     .-..-..-.. .  .-.. ..-..-. .-.     |", 0Dh, 0Ah,
+                            "    |     |-  | `-.|-|  |..| | | |  )|-      |", 0Dh, 0Ah,
+                            "    |     '  `-'`-'' `  `-'`-'`-'`-' `-'     |", 0Dh, 0Ah,
+                            "    +----------------------------------------+", 0
+    slFishGuide     BYTE    "    #========================================#", 0Dh, 0Ah,
+                            "    H     .-..-..-.. .  .-.. ..-..-. .-.     H", 0Dh, 0Ah,
+                            "    H     |-  | `-.|-|  |..| | | |  )|-      H", 0Dh, 0Ah,
+                            "    H     '  `-'`-'' `  `-'`-'`-'`-' `-'     H", 0Dh, 0Ah,
+                            "    #========================================#", 0
     ; for random
     randSeed DWORD ?
 
@@ -33,6 +57,9 @@ MyRandomRange PROTO,
     ; for process
     process   DWORD 10      ; 0 -> fial, 100 -> success
 
+    ; for selecting bar
+    selecting DWORD 0
+
 .code
 main PROC
     ; set randSeed with time
@@ -47,34 +74,72 @@ main PROC
 
     WaitForSpace:
         call Clrscr
-        mov edx, OFFSET startMsg
+        mov edx, OFFSET fishGameTitle
         call WriteString
+        call crlf
+        call crlf
+        .IF selecting == 0
+            mov edx, OFFSET slStartFishing
+            call WriteString
+            call crlf
+        .ELSE
+            mov edx, OFFSET unStartFishing
+            call WriteString
+            call crlf
+        .ENDIF
+        .IF selecting == 1
+            mov edx, OFFSET slFishGuide
+            call WriteString
+            call crlf
+        .ELSE
+            mov edx, OFFSET unFishGuide
+            call WriteString
+            call crlf
+        .ENDIF
 
     WaitKey:
         call ReadKey
+        cmp al, 'w'
+        je PressW
+        cmp al, 's'
+        je PressS
         cmp al, ' '
-        jne WaitKey
-
-        call Clrscr
-        mov edx, OFFSET beginMsg
-        call WriteString
+        je PressedSpace
 
         mov eax, 100
         call Delay
+        jmp WaitForSpace
+
+        PressW:
+            mov eax, selecting
+            dec eax
+            .IF eax < 0
+                mov eax, 0
+            .ENDIF
+            mov selecting, eax
+            mov eax, 100
+            call Delay
+            jmp WaitForSpace
+        
+        PressS:
+            mov eax, selecting
+            inc eax
+            .IF eax > 1
+                mov eax, 1
+            .ENDIF
+            mov selecting, eax
+            mov eax, 100
+            call Delay
+            jmp WaitForSpace
+    
+    PressedSpace:
+        .IF selecting == 0
+            jmp FishingGame
+        .ELSE
+            jmp WaitForSpace
+        .ENDIF
 
     FishingGame:
-        ; output for debug
-        ;call Clrscr
-        ;mov eax, hookPos
-        ;call WriteInt
-        ;call crlf
-        ;mov eax, fishPos
-        ;call WriteInt
-        ;call crlf
-        ;mov eax, process
-        ;call WriteInt
-        ;call crlf
-
         Output:
             call Clrscr
             UpperFrame:
