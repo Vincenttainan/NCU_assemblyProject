@@ -58,7 +58,7 @@ MyRandomRange PROTO,
     process   DWORD 10      ; 0 -> fial, 100 -> success
 
     ; for selecting bar
-    selecting DWORD 0
+    selecting DWORD 1
 
 .code
 main PROC
@@ -68,9 +68,10 @@ main PROC
     
     SetUp:
         mov     hookPos, 0
-        mov     fishPos, 0
+        mov     fishPos, 1
         mov     fishCooldown, 0
         mov     process, 10
+        mov     selecting, 1
 
     WaitForSpace:
         call Clrscr
@@ -78,7 +79,7 @@ main PROC
         call WriteString
         call crlf
         call crlf
-        .IF selecting == 0
+        .IF selecting == 1
             mov edx, OFFSET slStartFishing
             call WriteString
             call crlf
@@ -87,7 +88,7 @@ main PROC
             call WriteString
             call crlf
         .ENDIF
-        .IF selecting == 1
+        .IF selecting == 2
             mov edx, OFFSET slFishGuide
             call WriteString
             call crlf
@@ -113,8 +114,8 @@ main PROC
         PressW:
             mov eax, selecting
             dec eax
-            .IF eax < 0
-                mov eax, 0
+            .IF eax < 1
+                mov eax, 1
             .ENDIF
             mov selecting, eax
             mov eax, 100
@@ -124,8 +125,8 @@ main PROC
         PressS:
             mov eax, selecting
             inc eax
-            .IF eax > 1
-                mov eax, 1
+            .IF eax > 2
+                mov eax, 2
             .ENDIF
             mov selecting, eax
             mov eax, 100
@@ -133,9 +134,10 @@ main PROC
             jmp WaitForSpace
     
     PressedSpace:
-        .IF selecting == 0
+        .IF selecting == 1
             jmp FishingGame
         .ELSE
+            ; need to be replace by fish guide !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             jmp WaitForSpace
         .ENDIF
 
