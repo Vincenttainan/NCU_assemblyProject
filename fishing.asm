@@ -15,35 +15,70 @@ MyRandomRange PROTO,
                             " | _|| (_-< ' \| | ' \/ _` | | (_ / _` | '  \/ -_)", 0Dh, 0Ah,
                             " |_| |_/__/_||_|_|_||_\__, |  \___\__,_|_|_|_\___|", 0Dh, 0Ah,
                             "                      |___/                       ", 0
+    fishGuideUnk1   BYTE    "+------------------------------------------------+", 0Dh, 0Ah,
+                            "|       _   _      _                             |", 0Dh, 0Ah,
+                            "|      | | | |_ _ | |___ _  _____ __ ___ _       |", 0Dh, 0Ah,
+                            "|      | |_| | ' \| / / ' \/ _ \ V  V / ' \      |", 0Dh, 0Ah,
+                            "|       \___/|_||_|_\_\_||_\___/\_/\_/|_||_|     |", 0Dh, 0Ah
+    fishGuideUnk2   BYTE    "+------------------------------------------------+", 0Dh, 0Ah,
+                            "+------------------------------------------------+", 0Dh, 0Ah,
+                            "|                                                |", 0Dh, 0Ah,
+                            "|                                                |", 0Dh, 0Ah,
+                            "| _____           _                 _      _     |", 0Dh, 0Ah
+    fishGuideUnk3   BYTE    "||_   _| _ _  _  | |_ ___   __ __ _| |_ __| |_   |", 0Dh, 0Ah,
+                            "|  | || '_| || | |  _/ _ \ / _/ _` |  _/ _| ' \  |", 0Dh, 0Ah,
+                            "|  |_||_|  \_, |  \__\___/ \__\__,_|\__\__|_||_| |", 0Dh, 0Ah,
+                            "|          |__/                                  |", 0Dh, 0Ah,
+                            "|                                                |", 0Dh, 0Ah
+    fishGuideUnk4   BYTE    "|           _   _           __ _    _            |", 0Dh, 0Ah,
+                            "|          | |_| |_  ___   / _(_)__| |_          |", 0Dh, 0Ah,
+                            "|          |  _| ' \/ -_) |  _| (_-< ' \         |", 0Dh, 0Ah,
+                            "|           \__|_||_\___| |_| |_/__/_||_|        |", 0Dh, 0Ah,
+                            "|                                                |", 0Dh, 0Ah
+    fishGuideUnk5   BYTE    "|                                                |", 0Dh, 0Ah,
+                            "|           __ _        _     _   _   _          |", 0Dh, 0Ah,
+                            "|          / _(_)_ _ __| |_  | | | | | |         |", 0Dh, 0Ah,
+                            "|         |  _| | '_(_-<  _| |_| |_| |_|         |", 0Dh, 0Ah,
+                            "|         |_| |_|_| /__/\__| (_) (_) (_)         |", 0Dh, 0Ah
+    fishGuideUnk6   BYTE    "|                                                |", 0Dh, 0Ah,
+                            "|                                                |", 0Dh, 0Ah,
+                            "|                                                |", 0Dh, 0Ah,
+                            "|                                                |", 0Dh, 0Ah,
+                            "+---------+----------------------------+---------+", 0Dh, 0Ah
+    fishGuideUnk7   BYTE    "|   __    |An  unknown  fish  lived  in|    __   |", 0Dh, 0Ah,
+                            "|  / /__  |an unknown place. Feefing on|  __\ \  |", 0Dh, 0Ah,
+                            "| < <___| |unknown things. Can catch it| |___> > |", 0Dh, 0Ah,
+                            "|  \_\    |by  using  an  unknown  way.|    /_/  |", 0Dh, 0Ah,
+                            "+---------+----------------------------+---------+", 0
     fishGuideSar1   BYTE    "+------------------------------------------------+", 0Dh, 0Ah,
                             "|          ___              _ _                  |", 0Dh, 0Ah,
                             "|         / __| __ _ _ _ __| (_)_ _  ___         |", 0Dh, 0Ah,
                             "|         \__ \/ _` | '_/ _` | | ' \/ -_)        |", 0Dh, 0Ah,
-                            "|         |___/\__,_|_| \__,_|_|_||_\___|        |", 0
+                            "|         |___/\__,_|_| \__,_|_|_||_\___|        |", 0Dh, 0Ah
     fishGuideSar2   BYTE    "+------------------------------------------------+", 0Dh, 0Ah,
                             "|                                                |", 0Dh, 0Ah,
                             "|                 .                              |", 0Dh, 0Ah,
-                            "|               @@@@                             |", 0
+                            "|               @@@@                             |", 0Dh, 0Ah
     fishGuideSar3   BYTE    "|              @@@@@@@                     +@@@. |", 0Dh, 0Ah,
                             "|..@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#..  .@@@@@.    |", 0Dh, 0Ah,
                             "|-.@ ..@.@ .@@@@@@@@@@@@@@@@@@@@@@@@@@@@@.       |", 0Dh, 0Ah,
                             "|  @@. ..@                     ..@@@.  @@@.      |", 0Dh, 0Ah,
-                            "|     .@@.               .#@@@..         .@@     |", 0
+                            "|     .@@.               .#@@@..         .@@     |", 0Dh, 0Ah
     fishGuideSar4   BYTE    "|         . .@@@@@@@@:                           |", 0Dh, 0Ah,
                             "|               .@@.                             |", 0Dh, 0Ah,
                             "|                                                |", 0Dh, 0Ah,
                             "|                 .                              |", 0Dh, 0Ah,
-                            "|               @@@@                             |", 0
+                            "|               @@@@                             |", 0Dh, 0Ah
     fishGuideSar5   BYTE    "|              @@@@@@@                     +@@@. |", 0Dh, 0Ah,
                             "|..@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#..  .@@@@@.    |", 0Dh, 0Ah,
                             "|-.@ ..@.@ .@@@@@@@@@@@@@@@@@@@@@@@@@@@@@.       |", 0Dh, 0Ah,
                             "|  @@. ..@                     ..@@@.  @@@.      |", 0Dh, 0Ah,
-                            "|     .@@.               .#@@@..         .@@     |", 0
+                            "|     .@@.               .#@@@..         .@@     |", 0Dh, 0Ah
     fishGuideSar6   BYTE    "|         . .@@@@@@@@:                           |", 0Dh, 0Ah,
                             "|               .@@.                             |", 0Dh, 0Ah,
                             "|                                                |", 0Dh, 0Ah,
                             "|                                                |", 0Dh, 0Ah,
-                            "+---------+----------------------------+---------+", 0
+                            "+---------+----------------------------+---------+", 0Dh, 0Ah
     fishGuideSar7   BYTE    "|   __    |Sardines   are  small   fish|    __   |", 0Dh, 0Ah,
                             "|  / /__  |that  swim  in large schools|  __\ \  |", 0Dh, 0Ah,
                             "| < <___| |silver    bodies    glinting| |___> > |", 0Dh, 0Ah,
@@ -53,31 +88,31 @@ MyRandomRange PROTO,
                             "|     ___       __  __          __ _    _        |", 0Dh, 0Ah,
                             "|    | _ \_  _ / _|/ _|___ _ _ / _(_)__| |_      |", 0Dh, 0Ah,
                             "|    |  _/ || |  _|  _/ -_) '_|  _| (_-< ' \     |", 0Dh, 0Ah,
-                            "|    |_|  \_,_|_| |_| \___|_| |_| |_/__/_||_|    |", 0
+                            "|    |_|  \_,_|_| |_| \___|_| |_| |_/__/_||_|    |", 0Dh, 0Ah
     fishGuidePuf2   BYTE    "+------------------------------------------------+", 0Dh, 0Ah,
                             "|                         @@@                    |", 0Dh, 0Ah,
                             "|                @@   @@@@@@@@@@@   @@@          |", 0Dh, 0Ah,
-                            "|                @@@@@@@@@@@@@@@@@@@@@@          |", 0
+                            "|                @@@@@@@@@@@@@@@@@@@@@@          |", 0Dh, 0Ah
     fishGuidePuf3   BYTE    "|             @@@@@@               @@@@@         |", 0Dh, 0Ah,
                             "|@@@       @@@@@  @@@      @@         @@@@       |", 0Dh, 0Ah,
                             "|@@@@@@@@@@@@@     @       @@          @@@@@@@   |", 0Dh, 0Ah,
                             "|@@@ @@@@@@                      @@@@@@@ @@@@    |", 0Dh, 0Ah,
-                            "|@@@   @@@   @@            @@   @@@  @@@@ @@@    |", 0
+                            "|@@@   @@@   @@            @@   @@@  @@@@ @@@    |", 0Dh, 0Ah
     fishGuidePuf4   BYTE    "|@@@   @@@   @@    @@@     @@   @@@@ @@@@  @@@   |", 0Dh, 0Ah,
                             "|@@@ @@@@@@                      @@@@@@@   @@@@@@|", 0Dh, 0Ah,
                             "|@@@@@@@ @@@           @@                  @@@@@ |", 0Dh, 0Ah,
                             "|@@@      @@@  @@@   @@@@@@@@@             @@@@@ |", 0Dh, 0Ah,
-                            "|         @@@   @    @@@  @@@@@@@@@@@@@@@@@@@@@@@|", 0
+                            "|         @@@   @    @@@  @@@@@@@@@@@@@@@@@@@@@@@|", 0Dh, 0Ah
     fishGuidePuf5   BYTE    "|         @@@        @@@     @@@@@@@@@     @@@   |", 0Dh, 0Ah,
                             "|          @@@       @@@@@@@@@@@          @@@    |", 0Dh, 0Ah,
                             "|          @@@@@@@@@@@@@@@@@             @@@@    |", 0Dh, 0Ah,
                             "|        @@@@@@@                       @@@@@@@   |", 0Dh, 0Ah,
-                            "|             @@@@                    @@@@       |", 0
+                            "|             @@@@                    @@@@       |", 0Dh, 0Ah
     fishGuidePuf6   BYTE    "|               @@@@@              @@@@@         |", 0Dh, 0Ah,
                             "|                @@@@@@@@@@@@@@@@@@@@@@          |", 0Dh, 0Ah,
                             "|                @@@   @@@@@@@@@@   @@@          |", 0Dh, 0Ah,
                             "|                         @@@                    |", 0Dh, 0Ah,
-                            "+---------+----------------------------+---------+", 0
+                            "+---------+----------------------------+---------+", 0Dh, 0Ah
     fishGuidePuf7   BYTE    "|   __    |Pufferfish are small, unique|    __   |", 0Dh, 0Ah,
                             "|  / /__  |marine  creatures  known for|  __\ \  |", 0Dh, 0Ah,
                             "| < <___| |their ability to inflate for| |___> > |", 0Dh, 0Ah,
@@ -152,6 +187,9 @@ MyRandomRange PROTO,
     jumpForce SDWORD 2      ; + <jumpForce> per tick if space is pressed
 
     ; for fish
+    ; i = 0 -> puf
+    ; i = 1 -> sar
+    fishDict    DWORD  0,0    ; 0 -> uncatch, 1 -> catch
     fishPos     SDWORD 1      ; 1 <= hookPos <= lakeSiz - 1
     fishDir     SDWORD 1      ; -1, 0, 1 -> down, stop, up
     difficulty   DWORD 5      ; move every <difficulty> tick
@@ -201,6 +239,8 @@ main PROC
             call WriteString
             call crlf
         .ENDIF
+        mov eax, 100
+        call Delay
 
     WaitKey:
         call ReadKey
@@ -213,7 +253,7 @@ main PROC
 
         mov eax, 100
         call Delay
-        jmp WaitForSpace
+        jmp WaitKey
 
         PressW:
             mov eax, selecting
@@ -260,7 +300,7 @@ main PROC
             PressA:
                 mov eax, selecting
                 dec eax
-                .IF eax < 1
+                .IF eax == 0
                     mov eax, 2
                 .ENDIF
                 mov selecting, eax
@@ -269,60 +309,40 @@ main PROC
             PressD:
                 mov eax, selecting
                 inc eax
-                .IF eax > 2
+                .IF eax == 3
                     mov eax, 1
                 .ENDIF
                 mov selecting, eax
                 jmp EndPressed
 
             EndPressed:
-                .IF selecting == 1
+                mov ebx, selecting
+                dec ebx
+                shl ebx, 2
+                mov ecx, DWORD PTR fishDict[ebx]
+                cmp ecx, 1
+                jne FishUnkown
+                FishKnown:
+                    .IF selecting == 1
+                        call Clrscr
+                        mov edx, OFFSET fishGuidePuf1
+                        call WriteString
+                        call crlf
+                    .ELSEIF selecting == 2
+                        call Clrscr
+                        mov edx, OFFSET fishGuideSar1
+                        call WriteString
+                        call crlf
+                    .ENDIF
+                    jmp EndFishKnUn
+
+                FishUnkown:
                     call Clrscr
-                    mov edx, OFFSET fishGuidePuf1
+                    mov edx, OFFSET fishGuideUnk1
                     call WriteString
                     call crlf
-                    mov edx, OFFSET fishGuidePuf2
-                    call WriteString
-                    call crlf
-                    mov edx, OFFSET fishGuidePuf3
-                    call WriteString
-                    call crlf
-                    mov edx, OFFSET fishGuidePuf4
-                    call WriteString
-                    call crlf
-                    mov edx, OFFSET fishGuidePuf5
-                    call WriteString
-                    call crlf
-                    mov edx, OFFSET fishGuidePuf6
-                    call WriteString
-                    call crlf
-                    mov edx, OFFSET fishGuidePuf7
-                    call WriteString
-                    call crlf
-                .ELSEIF selecting == 2
-                    call Clrscr
-                    mov edx, OFFSET fishGuideSar1
-                    call WriteString
-                    call crlf
-                    mov edx, OFFSET fishGuideSar2
-                    call WriteString
-                    call crlf
-                    mov edx, OFFSET fishGuideSar3
-                    call WriteString
-                    call crlf
-                    mov edx, OFFSET fishGuideSar4
-                    call WriteString
-                    call crlf
-                    mov edx, OFFSET fishGuideSar5
-                    call WriteString
-                    call crlf
-                    mov edx, OFFSET fishGuideSar6
-                    call WriteString
-                    call crlf
-                    mov edx, OFFSET fishGuideSar7
-                    call WriteString
-                    call crlf
-                .ENDIF
+
+                EndFishKnUn:
 
             mov eax, 100
             call Delay
@@ -666,9 +686,16 @@ main PROC
                 mov edx, OFFSET fishCaught
                 call WriteString
                 call crlf
-                mov eax, 3000
+                INVOKE MyRandomRange, 2
+                shl eax, 2
+                mov DWORD PTR fishDict[eax], 1
+                mov eax, 1000
                 call Delay
-                jmp SetUp
+                waitSpaceS:
+                    call ReadKey
+                    cmp al, ' '
+                    je SetUp
+                    jmp waitSpaceS
             .ELSEIF process == 0
                 call Clrscr
                 mov edx, OFFSET fishGameTitle
@@ -681,9 +708,13 @@ main PROC
                 mov edx, OFFSET fishEscaped
                 call WriteString
                 call crlf
-                mov eax, 3000
+                mov eax, 1000
                 call Delay
-                jmp SetUp
+                waitSpaceF:
+                    call ReadKey
+                    cmp al, ' '
+                    je SetUp
+                    jmp waitSpaceF
             .ENDIF
 
         ; delay
