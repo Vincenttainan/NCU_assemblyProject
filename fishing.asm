@@ -8,6 +8,30 @@ MyRandomRange PROTO,
     startMsg        BYTE    "Press Space to select.        Press w/s to up/down", 0
     guideMsg        BYTE    "Press Space to exit.        Press a/d to turn page", 0
     successFailMsg  BYTE    "                Press Space to exit", 0
+    teacher         BYTE    "Unknown one:", 0
+    tutorialBait    BYTE    "You have cast your line...", 0Dh, 0Ah,
+                            "Now just sit back and wait...", 0Dh, 0Ah,
+                            "Who knows what kind of fish might bite next...", 0
+    tutorialFish    BYTE    "The fish is hooked...", 0Dh, 0Ah,
+                            "Press Space to tighten the line...", 0Dh, 0Ah,
+                            "If you don't, it'll loosen on its own...", 0Dh, 0Ah,
+                            "Keep the fish inside the hook zone...", 0
+    tutorialProc    BYTE    "If the fish stays in the hook zone...", 0Dh, 0Ah,
+                            "The bar goes up...", 0Dh, 0Ah,
+                            "If it doesn't... the bar drops...", 0Dh, 0Ah,
+                            "Fill the bar to catch the fish...", 0Dh, 0Ah,
+                            "But be careful...", 0Dh, 0Ah,
+                            "If it hits zero, the fish gets away...", 0
+    tutorialCatch   BYTE    "Now you finally caught a fish...", 0Dh, 0Ah,
+                            "That's all I can teach you...", 0Dh, 0Ah,
+                            "It's your turn to catch them all...", 0
+    fishingEx1      BYTE    "+--------------------------------------------------+", 0Dh, 0Ah,
+                            "|#####                                             |", 0Dh, 0Ah,
+                            "+--------------------------------------------------+", 0Dh, 0Ah,
+                            "| +---+                                            |", 0Dh, 0Ah,
+                            "| [F]                                              |", 0Dh, 0Ah
+    fishingEx2      BYTE    "| +---+                                            |", 0Dh, 0Ah,
+                            "+--------------------------------------------------+", 0
     frame           BYTE    "+--------------------------------------------------+", 0
     fishGameTitle   BYTE    "  ___ _    _    _              ___                ", 0Dh, 0Ah,
                             " | __(_)__| |_ (_)_ _  __ _   / __|__ _ _ __  ___ ", 0Dh, 0Ah,
@@ -225,6 +249,9 @@ MyRandomRange PROTO,
     ; for selecting bar
     selecting       DWORD  1
 
+    ; for tutorial
+    isTutorial      DWORD  0
+
 .code
 main PROC
     ; set randSeed with time
@@ -384,6 +411,173 @@ main PROC
             jmp FishGuideLoop
 
     FishingGame:
+        .IF isTutorial == 0
+            WaitBaitTutorial:
+                call Clrscr
+                mov edx, OFFSET fishGameTitle
+                call WriteString
+                call crlf
+                call crlf
+                mov edx, OFFSET baitingTitle1
+                call WriteString
+                call crlf
+                call crlf
+
+                mov edx, OFFSET teacher
+                call WriteString
+                call crlf
+
+                mov esi, OFFSET tutorialBait
+                PrintTBLoop:
+                    mov al, [esi]
+                    cmp al, 0
+                    je DonePTBL
+
+                    movzx eax, al
+                    call WriteChar
+
+                    cmp al, '.'
+                    je PTBLDotDelay
+
+                    mov eax, 10
+                    call Delay
+                    jmp PTBLNextChar
+
+                    PTBLDotDelay:
+                        mov eax, 500
+                        call Delay
+                    
+                    PTBLNextChar:
+                        inc esi
+                        jmp PrintTBLoop
+
+                DonePTBL:
+                    call crlf
+                    mov edx, OFFSET successFailMsg
+                    call WriteString
+                    call crlf
+
+                    DPTBLWaitSpace:
+                        call ReadKey
+                        .IF al == ' '
+                            jmp DoneWBT
+                        .ENDIF
+                        mov eax, 50
+                        call Delay
+                        jmp DPTBLWaitSpace
+            DoneWBT:
+
+            FishingTutorial:
+                call Clrscr
+                mov edx, OFFSET fishGameTitle
+                call WriteString
+                call crlf
+                call crlf
+                mov edx, OFFSET fishingEx1
+                call WriteString
+                call crlf
+
+                mov edx, OFFSET teacher
+                call WriteString
+                call crlf
+
+                mov esi, OFFSET tutorialFish
+                PrintFTLoop:
+                    mov al, [esi]
+                    cmp al, 0
+                    je DonePFTL
+
+                    movzx eax, al
+                    call WriteChar
+
+                    cmp al, '.'
+                    je PFTLDotDelay
+
+                    mov eax, 10
+                    call Delay
+                    jmp PFTLNextChar
+
+                    PFTLDotDelay:
+                        mov eax, 500
+                        call Delay
+                    
+                    PFTLNextChar:
+                        inc esi
+                        jmp PrintFTLoop
+
+                DonePFTL:
+                    call crlf
+                    mov edx, OFFSET successFailMsg
+                    call WriteString
+                    call crlf
+
+                    DPTFTWaitSpace:
+                        call ReadKey
+                        .IF al == ' '
+                            jmp DoneDPTFTWS
+                        .ENDIF
+                        mov eax, 50
+                        call Delay
+                        jmp DPTFTWaitSpace
+
+                DoneDPTFTWS:
+            ProcessTutorial:
+                call Clrscr
+                mov edx, OFFSET fishGameTitle
+                call WriteString
+                call crlf
+                call crlf
+                mov edx, OFFSET fishingEx1
+                call WriteString
+                call crlf
+
+                mov edx, OFFSET teacher
+                call WriteString
+                call crlf
+
+                mov esi, OFFSET tutorialProc
+                PrintPTLoop:
+                    mov al, [esi]
+                    cmp al, 0
+                    je DonePPTL
+
+                    movzx eax, al
+                    call WriteChar
+
+                    cmp al, '.'
+                    je PPTLDotDelay
+
+                    mov eax, 10
+                    call Delay
+                    jmp PPTLNextChar
+
+                    PPTLDotDelay:
+                        mov eax, 500
+                        call Delay
+                    
+                    PPTLNextChar:
+                        inc esi
+                        jmp PrintPTLoop
+
+                DonePPTL:
+                    call crlf
+                    mov edx, OFFSET successFailMsg
+                    call WriteString
+                    call crlf
+
+                    DPTPTWaitSpace:
+                        call ReadKey
+                        .IF al == ' '
+                            jmp DoneDPTPTWS
+                        .ENDIF
+                        mov eax, 50
+                        call Delay
+                        jmp DPTPTWaitSpace
+
+                DoneDPTPTWS:
+                jmp FishingGameLoop
+        .ENDIF
+
         FishingGameBaiting:
             mov ebx, 1
             mov ecx, 0
@@ -700,12 +894,16 @@ main PROC
                     mov process, ecx
                 .ELSE
                     mov ecx, process
-                    dec ecx
+                    .IF isTutorial == 1
+                        dec ecx
+                    .ENDIF
                     mov process, ecx
                 .ENDIF
             .ELSE
                 mov ecx, process
-                dec ecx
+                .IF isTutorial == 1
+                    dec ecx
+                .ENDIF
                 mov process, ecx
             .ENDIF
 
@@ -721,6 +919,41 @@ main PROC
                 mov edx, OFFSET fishCaught
                 call WriteString
                 call crlf
+                .IF isTutorial == 0
+                    mov isTutorial, 1
+
+                    mov edx, OFFSET teacher
+                    call WriteString
+                    call crlf
+
+                    mov esi, OFFSET tutorialCatch
+                    PrintTCLoop:
+                        mov al, [esi]
+                        cmp al, 0
+                        je DonePTCL
+
+                        movzx eax, al
+                        call WriteChar
+
+                        cmp al, '.'
+                        je PTCLDotDelay
+
+                        mov eax, 10
+                        call Delay
+                        jmp PTCLNextChar
+
+                        PTCLDotDelay:
+                            mov eax, 500
+                            call Delay
+                        
+                        PTCLNextChar:
+                            inc esi
+                            jmp PrintTCLoop
+
+                    DonePTCL:
+
+                    jmp waitSpaceS
+                .ENDIF
                 mov edx, OFFSET itIsA
                 call WriteString
                 call crlf
