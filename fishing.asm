@@ -5,10 +5,10 @@ MyRandomRange PROTO,
     maxNum: DWORD
 
 .data
-    startMsg        BYTE "Press Space to select.        Press w/s to up/down", 0
-    guideMsg        BYTE "Press Space to exit.        Press a/d to turn page", 0
-    successFailMsg  BYTE "                Press Space to exit", 0
-    frame           BYTE "+--------------------------------------------------+", 0
+    startMsg        BYTE    "Press Space to select.        Press w/s to up/down", 0
+    guideMsg        BYTE    "Press Space to exit.        Press a/d to turn page", 0
+    successFailMsg  BYTE    "                Press Space to exit", 0
+    frame           BYTE    "+--------------------------------------------------+", 0
     fishGameTitle   BYTE    "  ___ _    _    _              ___                ", 0Dh, 0Ah,
                             " | __(_)__| |_ (_)_ _  __ _   / __|__ _ _ __  ___ ", 0Dh, 0Ah,
                             " | _|| (_-< ' \| | ' \/ _` | | (_ / _` | '  \/ -_)", 0Dh, 0Ah,
@@ -198,33 +198,32 @@ MyRandomRange PROTO,
                             "    #========================================#", 0
 
     ; for random
-    randSeed DWORD ?
+    randSeed        DWORD  ?
 
     ; for lake
-    lakeSiz   DWORD 50
+    lakeSiz         DWORD  50
 
     ; for hook
-    hookSiz   DWORD 5       ; 5 <= hookSiz <= lakeSiz
-    hookPos   SDWORD 0      ; 0 <= hookPos <= lakeSiz - hookSiz
-    velocity  SDWORD 0      ; hook's velocity
-    gravity   SDWORD -1     ; + <gravity> per tick
-    jumpForce SDWORD 2      ; + <jumpForce> per tick if space is pressed
+    hookSiz         DWORD  5       ; 5 <= hookSiz <= lakeSiz
+    hookPos         SDWORD 0      ; 0 <= hookPos <= lakeSiz - hookSiz
+    velocity        SDWORD 0      ; hook's velocity
+    gravity         SDWORD -1     ; + <gravity> per tick
+    jumpForce       SDWORD 2      ; + <jumpForce> per tick if space is pressed
 
     ; for fish
     ; i = 0 -> puf
     ; i = 1 -> sar
-    ; i = 2 -> cat
-    fishDict    DWORD  0,0,0  ; 0 -> uncatch, 1 -> catch
-    fishPos     SDWORD 1      ; 1 <= hookPos <= lakeSiz - 1
-    fishDir     SDWORD 1      ; -1, 0, 1 -> down, stop, up
-    difficulty   DWORD 5      ; move every <difficulty> tick
-    fishCooldown DWORD 0      ; count steps
+    fishDict        DWORD  0,0,0  ; 0 -> uncatch, 1 -> catch
+    fishPos         SDWORD 1      ; 1 <= hookPos <= lakeSiz - 1
+    fishDir         SDWORD 1      ; -1, 0, 1 -> down, stop, up
+    difficulty      DWORD  5      ; move every <difficulty> tick
+    fishCooldown    DWORD  0      ; count steps
 
     ; for process
-    process   DWORD 10      ; 0 -> fial, 100 -> success
+    process         DWORD  10      ; 0 -> fial, 100 -> success
 
     ; for selecting bar
-    selecting DWORD 1
+    selecting       DWORD  1
 
 .code
 main PROC
