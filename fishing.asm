@@ -213,6 +213,7 @@ MyRandomRange PROTO,
     ; for fish
     ; i = 0 -> puf
     ; i = 1 -> sar
+    ; i = 2 -> cat
     fishDict    DWORD  0,0,0  ; 0 -> uncatch, 1 -> catch
     fishPos     SDWORD 1      ; 1 <= hookPos <= lakeSiz - 1
     fishDir     SDWORD 1      ; -1, 0, 1 -> down, stop, up
