@@ -42,6 +42,34 @@ MyRandomRange PROTO,
     fishGuideUnk6   BYTE    "| < <___| |unknown things. Can catch it| |___> > |", 0Dh, 0Ah,
                             "|  \_\    |by  using  an  unknown  way.|    /_/  |", 0Dh, 0Ah,
                             "+---------+----------------------------+---------+", 0
+    fishGuideCat1   BYTE    "+------------------------------------------------+", 0Dh, 0Ah,
+                            "|            ___      _    __ _    _             |", 0Dh, 0Ah,
+                            "|           / __|__ _| |_ / _(_)__| |_           |", 0Dh, 0Ah,
+                            "|          | (__/ _` |  _|  _| (_-< ' \          |", 0Dh, 0Ah,
+                            "|           \___\__,_|\__|_| |_/__/_||_|         |", 0Dh, 0Ah
+    fishGuideCat2   BYTE    "+------------------------------------------------+", 0Dh, 0Ah,
+                            "|                            ..                  |", 0Dh, 0Ah,
+                            "|                      .%%%%%%%%%%%%%..          |", 0Dh, 0Ah,
+                            "|                .%%%%%%%%%%%%%%%%%%%%%%%%..     |", 0Dh, 0Ah,
+                            "|              .%%%%%%%%%%%%%%%%%%%%%%%%%%%%.    |", 0Dh, 0Ah
+    fishGuideCat3   BYTE    "|             %%%%%%%%%%%%%:          .%%%%%%    |", 0Dh, 0Ah,
+                            "|           :%%%%%%%%%%%%%:             .%%%%%.  |", 0Dh, 0Ah,
+                            "|         :%%%%%%%%%%%%%%%%              .%%%%%. |", 0Dh, 0Ah,
+                            "|         :%%%%%%%%%%%%%%%                .%%%%% |", 0Dh, 0Ah,
+                            "|          %%%%%%%%%%%%%%                  :%%%%.|", 0Dh, 0Ah
+    fishGuideCat4   BYTE    "| ....     %%%%%%%%%%%%%%   :.             %%%%% |", 0Dh, 0Ah,
+                            "|.    ..    %%%%%%%%%%%%   :   ..         %%%%%. |", 0Dh, 0Ah,
+                            "|      ..    %%%%%%%%%%   :. ..         .%%%%.   |", 0Dh, 0Ah,
+                            "|       ..   .%%%%%%%% ... ..          .%%%%%.   |", 0Dh, 0Ah,
+                            "|        .......%%%%    ...           .%%%%.     |", 0Dh, 0Ah
+    fishGuideCat5   BYTE    "|    ..     ...     ...               .%%%.      |", 0Dh, 0Ah,
+                            "|      ....                            %%        |", 0Dh, 0Ah,
+                            "+---------+----------------------------+---------+", 0Dh, 0Ah,
+                            "|   __    |Catfish   are   medium-sized|    __   |", 0Dh, 0Ah,
+                            "|  / /__  |fish  that  dwell  near  the|  __\ \  |", 0Dh, 0Ah
+    fishGuideCat6   BYTE    "| < <___| |bottom  of  rivers or lakes,| |___> > |", 0Dh, 0Ah,
+                            "|  \_\    |using whiskers to sense prey|    /_/  |", 0Dh, 0Ah,
+                            "+---------+----------------------------+---------+", 0
     fishGuideSar1   BYTE    "+------------------------------------------------+", 0Dh, 0Ah,
                             "|          ___              _ _                  |", 0Dh, 0Ah,
                             "|         / __| __ _ _ _ __| (_)_ _  ___         |", 0Dh, 0Ah,
@@ -120,6 +148,10 @@ MyRandomRange PROTO,
                             "          / __| __ _ _ _ __| (_)_ _  ___ ", 0Dh, 0Ah,
                             "          \__ \/ _` | '_/ _` | | ' \/ -_)", 0Dh, 0Ah,
                             "          |___/\__,_|_| \__,_|_|_||_\___|", 0
+    catfishString   BYTE    "             ___      _    __ _    _    ", 0Dh, 0Ah,
+                            "            / __|__ _| |_ / _(_)__| |_  ", 0Dh, 0Ah,
+                            "           | (__/ _` |  _|  _| (_-< ' \ ", 0Dh, 0Ah,
+                            "            \___\__,_|\__|_| |_/__/_||_|", 0
     fishFailOhNo    BYTE    "               ___  _               ", 0Dh, 0Ah,
                             "              / _ \| |_    _ _  ___ ", 0Dh, 0Ah,
                             "             | (_) | ' \  | ' \/ _ \", 0Dh, 0Ah,
@@ -181,7 +213,7 @@ MyRandomRange PROTO,
     ; for fish
     ; i = 0 -> puf
     ; i = 1 -> sar
-    fishDict    DWORD  0,0    ; 0 -> uncatch, 1 -> catch
+    fishDict    DWORD  0,0,0  ; 0 -> uncatch, 1 -> catch
     fishPos     SDWORD 1      ; 1 <= hookPos <= lakeSiz - 1
     fishDir     SDWORD 1      ; -1, 0, 1 -> down, stop, up
     difficulty   DWORD 5      ; move every <difficulty> tick
@@ -296,7 +328,7 @@ main PROC
                 mov eax, selecting
                 dec eax
                 .IF eax == 0
-                    mov eax, 2
+                    mov eax, 3
                 .ENDIF
                 mov selecting, eax
                 jmp EndPressed
@@ -304,7 +336,7 @@ main PROC
             PressD:
                 mov eax, selecting
                 inc eax
-                .IF eax == 3
+                .IF eax == 4
                     mov eax, 1
                 .ENDIF
                 mov selecting, eax
@@ -326,6 +358,11 @@ main PROC
                     .ELSEIF selecting == 2
                         call Clrscr
                         mov edx, OFFSET fishGuideSar1
+                        call WriteString
+                        call crlf
+                    .ELSEIF selecting == 3
+                        call Clrscr
+                        mov edx, OFFSET fishGuideCat1
                         call WriteString
                         call crlf
                     .ENDIF
@@ -687,11 +724,13 @@ main PROC
                 mov edx, OFFSET itIsA
                 call WriteString
                 call crlf
-                INVOKE MyRandomRange, 2
+                INVOKE MyRandomRange, 3
                 cmp eax, 0
                 je caughtPuf
                 cmp eax, 1
                 je caughtSar
+                cmp eax, 2
+                je caughtCat
                 caughtPuf:
                     mov edx, OFFSET pufferString
                     call WriteString
@@ -699,6 +738,11 @@ main PROC
                     jmp endCaught
                 caughtSar:
                     mov edx, OFFSET sardineString
+                    call WriteString
+                    call crlf
+                    jmp endCaught
+                caughtCat:
+                    mov edx, OFFSET catfishString
                     call WriteString
                     call crlf
                     jmp endCaught
