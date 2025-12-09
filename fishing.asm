@@ -8,23 +8,24 @@ MyRandomRange PROTO,
     startMsg        BYTE    "Press Space to select.        Press w/s to up/down", 0
     guideMsg        BYTE    "Press Space to exit.        Press a/d to turn page", 0
     successFailMsg  BYTE    "                Press Space to exit", 0
+    continueMsg     BYTE    "                Press Space to continue", 0
     teacher         BYTE    "Unknown one:", 0
-    tutorialBait    BYTE    "You have cast your line...", 0Dh, 0Ah,
-                            "Now just sit back and wait...", 0Dh, 0Ah,
-                            "Who knows what kind of fish might bite next...", 0
-    tutorialFish    BYTE    "The fish is hooked...", 0Dh, 0Ah,
-                            "Press Space to tighten the line...", 0Dh, 0Ah,
-                            "If you don't, it'll loosen on its own...", 0Dh, 0Ah,
-                            "Keep the fish inside the hook zone...", 0
-    tutorialProc    BYTE    "If the fish stays in the hook zone...", 0Dh, 0Ah,
-                            "The bar goes up...", 0Dh, 0Ah,
-                            "If it doesn't... the bar drops...", 0Dh, 0Ah,
-                            "Fill the bar to catch the fish...", 0Dh, 0Ah,
-                            "But be careful...", 0Dh, 0Ah,
-                            "If it hits zero, the fish gets away...", 0
-    tutorialCatch   BYTE    "Now you finally caught a fish...", 0Dh, 0Ah,
-                            "That's all I can teach you...", 0Dh, 0Ah,
-                            "It's your turn to catch them all...", 0
+    tutorialBait    BYTE    "        You have cast your line...", 0Dh, 0Ah,
+                            "        Now just sit back and wait...", 0Dh, 0Ah,
+                            "        What kind of fish will bite next...", 0
+    tutorialFish    BYTE    "        The fish is hooked...", 0Dh, 0Ah,
+                            "        Press Space to tighten the line...", 0Dh, 0Ah,
+                            "        If you don't, it'll loosen on its own...", 0Dh, 0Ah,
+                            "        Keep the fish inside the hook zone...", 0
+    tutorialProc    BYTE    "        If the fish stays in the hook zone...", 0Dh, 0Ah,
+                            "        The bar goes up...", 0Dh, 0Ah,
+                            "        If it doesn't... the bar drops...", 0Dh, 0Ah,
+                            "        Fill the bar to catch the fish...", 0Dh, 0Ah,
+                            "        But be careful...", 0Dh, 0Ah,
+                            "        If it hits zero, the fish gets away...", 0
+    tutorialCatch   BYTE    "        Now you finally caught a fish...", 0Dh, 0Ah,
+                            "        That's all I can teach you...", 0Dh, 0Ah,
+                            "        It's your turn to catch them all...", 0
     fishingEx1      BYTE    "+--------------------------------------------------+", 0Dh, 0Ah,
                             "|#####                                             |", 0Dh, 0Ah,
                             "+--------------------------------------------------+", 0Dh, 0Ah,
@@ -454,7 +455,7 @@ main PROC
                 DonePTBL:
                     call ReadKey
                     call crlf
-                    mov edx, OFFSET successFailMsg
+                    mov edx, OFFSET continueMsg
                     call WriteString
                     call crlf
 
@@ -509,7 +510,7 @@ main PROC
                 DonePFTL:
                     call ReadKey
                     call crlf
-                    mov edx, OFFSET successFailMsg
+                    mov edx, OFFSET continueMsg
                     call WriteString
                     call crlf
 
@@ -564,7 +565,7 @@ main PROC
                 DonePPTL:
                     call ReadKey
                     call crlf
-                    mov edx, OFFSET successFailMsg
+                    mov edx, OFFSET continueMsg
                     call WriteString
                     call crlf
 
@@ -957,7 +958,7 @@ main PROC
                     DonePTCL:
                     call ReadKey
                     call crlf
-                    mov edx, OFFSET successFailMsg
+                    mov edx, OFFSET continueMsg
                     call WriteString
                     call crlf
                     
