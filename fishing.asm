@@ -452,6 +452,7 @@ main PROC
                         jmp PrintTBLoop
 
                 DonePTBL:
+                    call ReadKey
                     call crlf
                     mov edx, OFFSET successFailMsg
                     call WriteString
@@ -506,6 +507,7 @@ main PROC
                         jmp PrintFTLoop
 
                 DonePFTL:
+                    call ReadKey
                     call crlf
                     mov edx, OFFSET successFailMsg
                     call WriteString
@@ -560,6 +562,7 @@ main PROC
                         jmp PrintPTLoop
 
                 DonePPTL:
+                    call ReadKey
                     call crlf
                     mov edx, OFFSET successFailMsg
                     call WriteString
@@ -908,6 +911,7 @@ main PROC
             .ENDIF
 
             .IF process == 100
+                Proc100:
                 call Clrscr
                 mov edx, OFFSET fishGameTitle
                 call WriteString
@@ -951,8 +955,17 @@ main PROC
                             jmp PrintTCLoop
 
                     DonePTCL:
-
-                    jmp waitSpaceS
+                    call ReadKey
+                    call crlf
+                    mov edx, OFFSET successFailMsg
+                    call WriteString
+                    call crlf
+                    
+                    DPTCLWaitSpace:
+                        call ReadKey
+                        cmp al, ' '
+                        je Proc100
+                        jmp DPTCLWaitSpace
                 .ENDIF
                 mov edx, OFFSET itIsA
                 call WriteString
@@ -988,6 +1001,7 @@ main PROC
                 call crlf
                 mov eax, 1000
                 call Delay
+                call ReadKey
                 waitSpaceS:
                     call ReadKey
                     cmp al, ' '
@@ -1010,6 +1024,7 @@ main PROC
                 call crlf
                 mov eax, 1000
                 call Delay
+                call ReadKey
                 waitSpaceF:
                     call ReadKey
                     cmp al, ' '
